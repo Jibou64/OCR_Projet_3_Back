@@ -1,0 +1,23 @@
+server:
+  port: 3001
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/ocr_2
+    username: root
+    password: rootroot
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate.default_schema: ocr_2
+
+
+oc:
+  app:
+    jwtSecret: openclassrooms
+    jwtExpirationMs: 86400000
+
