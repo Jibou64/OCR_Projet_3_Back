@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/rentals")
 public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;

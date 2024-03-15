@@ -1,8 +1,9 @@
 package com.example.projet3chatop.repository;
 
 import com.example.projet3chatop.entity.Message;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MessageRepository extends CrudRepository<Message, Integer> {
+
+public interface MessageRepository extends JpaRepository<Message, String> {
 
 }
