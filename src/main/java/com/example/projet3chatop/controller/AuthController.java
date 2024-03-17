@@ -1,13 +1,11 @@
-package com.example.projet3chatop.controllers;
+package com.example.projet3chatop.controller;
 
 import javax.validation.Valid;
 
 import com.example.projet3chatop.dto.UserDto;
 import com.example.projet3chatop.entity.User;
 import com.example.projet3chatop.mapper.UserMapper;
-import com.example.projet3chatop.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

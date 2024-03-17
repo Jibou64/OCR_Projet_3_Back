@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     return UserDetailsImpl
             .builder()
-            .id(user.getId())
+            .id(Long.valueOf(user.getId()))
             .username(user.getEmail())
             .lastName(user.getLastName())
             .firstName(user.getFirstName())

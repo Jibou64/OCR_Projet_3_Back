@@ -1,8 +1,8 @@
-package com.example.projet3chatop.controllers;
+package com.example.projet3chatop.controller;
 
 import com.example.projet3chatop.entity.User;
 import com.example.projet3chatop.mapper.UserMapper;
-import com.example.projet3chatop.services.UserService;
+import com.example.projet3chatop.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

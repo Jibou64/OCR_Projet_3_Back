@@ -28,11 +28,11 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "rental_id", referencedColumnName = "id")
-    private Rental rental;
+    private Rental rentalId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User userId;
 
     @NotNull
     @Size(max=2000)

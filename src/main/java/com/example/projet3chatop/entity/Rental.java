@@ -4,11 +4,10 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,16 +17,35 @@ import java.time.LocalDateTime;
 @Table(name = "rentals")
 
 public class Rental {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     @Column(name = "name")
     private String name;
+
+
     @Column(name = "surface")
     private int surface;
+
+
     @Column(name = "price")
     private double price;
+
+
     @Column(name = "description")
     private String description;
+
+
+    @Column(name = "picture")
+    private String picture;
+
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User ownerId;
 
 
     @CreatedDate

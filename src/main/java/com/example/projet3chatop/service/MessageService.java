@@ -1,11 +1,9 @@
-package com.example.projet3chatop.services;
+package com.example.projet3chatop.service;
 
 import com.example.projet3chatop.dto.MessageDto;
 import com.example.projet3chatop.entity.Message;
-import com.example.projet3chatop.entity.User;
 import com.example.projet3chatop.mapper.MessageMapper;
 import com.example.projet3chatop.repository.MessageRepository;
-import com.example.projet3chatop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +16,10 @@ public class MessageService {
     private final MessageRepository messageRepository;
     @Autowired
     private MessageMapper messageMapper;
-    public Message creer(Message message) {
-       return messageRepository.save(message);
 
-    }
-    public void saveMessage(MessageDto message) {
-        messageRepository.save(messageMapper.toEntity(message));
+
+    public void saveMessage(Message message) {
+        messageRepository.save(message);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.projet3chatop.services;
+package com.example.projet3chatop.service;
 
 
 import com.example.projet3chatop.entity.Rental;
@@ -15,10 +15,9 @@ import javax.persistence.EntityNotFoundException;
 public class RentalService {
     @Autowired
     private final RentalRepository rentalRepository;
-    @Autowired
-    private final RentalMapper rentalMapper;
 
-    public Rental creer(Rental rental){
+
+    public Rental create(Rental rental){
         return rentalRepository.save(rental);
     }
     public Rental getRentalById(final Long id) throws EntityNotFoundException {

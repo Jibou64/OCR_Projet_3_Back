@@ -1,4 +1,4 @@
-package com.example.projet3chatop.services;
+package com.example.projet3chatop.service;
 
 import com.example.projet3chatop.entity.User;
 import com.example.projet3chatop.repository.UserRepository;
