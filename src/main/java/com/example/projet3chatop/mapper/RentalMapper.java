@@ -8,12 +8,17 @@ import com.example.projet3chatop.entity.User;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-@Mapper
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface RentalMapper {
 
     RentalDto rentalToDto(Rental rental);
     Rental rentalDtoToEntity(RentalDto rentalDto);
 
+    List<Rental> listRentalDtoToEntity(List<RentalDto> rentalDto);
+
+    List<RentalDto> listRentalToDto(List<Rental> rental);
 
 
 

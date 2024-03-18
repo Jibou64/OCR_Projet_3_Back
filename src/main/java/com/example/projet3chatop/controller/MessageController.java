@@ -3,7 +3,6 @@ package com.example.projet3chatop.controller;
 import com.example.projet3chatop.dto.MessageDto;
 import com.example.projet3chatop.entity.Message;
 import com.example.projet3chatop.mapper.MessageMapper;
-import com.example.projet3chatop.mapper.MessageMapperImpl;
 import com.example.projet3chatop.repository.MessageRepository;
 import com.example.projet3chatop.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,8 @@ import javax.validation.Valid;
 
 public class MessageController {
 
-    private MessageMapper messageMapper = new MessageMapperImpl();
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Autowired
     private MessageService messageService;
