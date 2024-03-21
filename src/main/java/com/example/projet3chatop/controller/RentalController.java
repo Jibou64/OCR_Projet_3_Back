@@ -80,5 +80,15 @@ public class RentalController {
 
     }
 
+    @PutMapping("/updateRentalById/{id}")
+    public RentalDto updateRentalById(@RequestHeader(value = "Authorization", required = false) String jwt,
+                                      @PathVariable Long id,
+                                      @RequestBody RentalDto newRentalDto) {
+
+        return rentalMapper.rentalToDto(rentalService.updateRentalById(id, newRentalDto));
+
+    }
+
+
 
 }

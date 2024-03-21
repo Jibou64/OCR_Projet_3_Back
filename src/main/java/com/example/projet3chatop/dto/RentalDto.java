@@ -22,8 +22,8 @@ public class RentalDto {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User ownerId;
     private String name;
-    private int surface;
-    private double price;
+    private float surface;
+    private float price;
     private String description;
 
 
