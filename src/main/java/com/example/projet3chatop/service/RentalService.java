@@ -1,6 +1,5 @@
 package com.example.projet3chatop.service;
 
-
 import com.example.projet3chatop.dto.RentalDto;
 import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.mapper.RentalMapper;
@@ -17,17 +16,16 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class RentalService {
+
     @Autowired
     private final RentalRepository rentalRepository;
 
-
+    // Méthode pour mettre à jour une location par son ID
     public Rental updateRentalById(Long id, RentalDto newRentalDto) {
-
         Rental finalRental = null;
         Optional<Rental> actualOptionalRental = rentalRepository.findById(id);
 
-        if(actualOptionalRental.isPresent()){
-
+        if (actualOptionalRental.isPresent()) {
             Rental actualRental = actualOptionalRental.get();
             actualRental.setPrice(newRentalDto.getPrice());
             actualRental.setDescription(newRentalDto.getDescription());
@@ -41,13 +39,17 @@ public class RentalService {
         return finalRental;
     }
 
-    public Rental create(Rental rental){
+    // Méthode pour créer une nouvelle location
+    public Rental create(Rental rental) {
         return rentalRepository.save(rental);
     }
+
+    // Méthode pour récupérer une location par son ID
     public Rental getRentalById(final Long id) throws EntityNotFoundException {
-        return rentalRepository.findById(id).get();
+        return rentalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Rental not found with id: " + id));
     }
 
+    // Méthode pour récupérer toutes les locations
     public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
     }

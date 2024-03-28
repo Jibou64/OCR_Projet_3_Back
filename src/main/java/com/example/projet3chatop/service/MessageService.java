@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-
 public class MessageService {
+
     @Autowired
     private final MessageRepository messageRepository;
+
     @Autowired
     private MessageMapper messageMapper;
 
-
+    // Méthode pour enregistrer un message dans la base de données
     public void saveMessage(Message message) {
         messageRepository.save(message);
     }
-
 }
