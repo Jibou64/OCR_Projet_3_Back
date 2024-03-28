@@ -23,14 +23,12 @@ public class UserDto {
 
     @NonNull
     @Size(max = 20)
-    private String lastName;
-
-    @NonNull
-    @Size(max = 20)
-    private String firstName;
+    private String name;
 
     @NonNull
     private boolean admin;
+
+
 
     @JsonIgnore
     @Size(max = 120)

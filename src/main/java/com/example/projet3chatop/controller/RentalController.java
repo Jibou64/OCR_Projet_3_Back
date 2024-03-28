@@ -42,7 +42,7 @@ public class RentalController {
 
 
 
-    @PostMapping(value = "/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RentalDto createRental(
 
             //@formatter:off
@@ -68,19 +68,19 @@ public class RentalController {
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
 
-    @GetMapping("/getRental/{id}")
+    @GetMapping("/{id}")
     public RentalDto getRentalById(@RequestHeader(value="Authorization",required=false) String jwt, @PathVariable Long id) {
         return rentalMapper.rentalToDto(rentalService.getRentalById(id));
     }
 
-    @GetMapping("/getAllRentals")
+    @GetMapping
     public List<RentalDto> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
 
         return rentalMapper.listRentalToDto(rentalService.getAllRentals());
 
     }
 
-    @PutMapping("/updateRentalById/{id}")
+    @PutMapping("/{id}")
     public RentalDto updateRentalById(@RequestHeader(value = "Authorization", required = false) String jwt,
                                       @PathVariable Long id,
                                       @RequestBody RentalDto newRentalDto) {

@@ -53,18 +53,11 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        boolean isAdmin = false;
-        User user = this.userRepository.findByEmail(userDetails.getUsername()).orElse(null);
-        if (user != null) {
-            isAdmin = user.isAdmin();
-        }
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                isAdmin));
+                userDetails.getName())
+                );
     }
 
     @PostMapping("/register")
@@ -75,11 +68,12 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        User user = new User(signUpRequest.getEmail(),
-                signUpRequest.getLastName(),
-                signUpRequest.getFirstName(),
+        User user = new User(
+                signUpRequest.getEmail(),
+                false,
                 passwordEncoder.encode(signUpRequest.getPassword()),
-                false);
+                signUpRequest.getName()
+                );
 
         userRepository.save(user);
 

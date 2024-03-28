@@ -36,21 +36,17 @@ public class User {
     private String email;
 
     @NonNull
-    @Size(max = 20)
-    @Column(name = "last_name")
-    private String lastName;
+    private boolean admin;
+
 
     @NonNull
     @Size(max = 20)
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "name")
+    private String name;
 
     @NonNull
     @Size(max = 120)
     private String password;
-
-    @NonNull
-    private boolean admin;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
