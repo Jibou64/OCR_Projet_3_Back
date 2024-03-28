@@ -15,7 +15,6 @@ import javax.validation.Valid;
 
 @RequestMapping("api/messages")
 @RestController
-
 public class MessageController {
 
     @Autowired
@@ -23,15 +22,15 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    // Endpoint pour créer un nouveau message.
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody MessageDto  messageDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody MessageDto messageDto) {
+        // Conversion du DTO en entité Message et sauvegarde dans le service.
         messageService.saveMessage(messageMapper.toEntity(messageDto));
 
-
+        // Réponse indiquant que le message a été envoyé avec succès.
         return ResponseEntity.ok("Message Send with Succes !");
     }
-
-
-
 }
