@@ -15,41 +15,52 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 public class UserDetailsImpl implements UserDetails {
+
   private static final long serialVersionUID = 1L;
 
+  // Identifiant de l'utilisateur
   private Long id;
 
+  // Nom d'utilisateur
   private String username;
 
+  // Nom de l'utilisateur
   private String name;
 
+  // Mot de passe de l'utilisateur (ignoré lors de la sérialisation JSON)
   @JsonIgnore
-  private String password;  
-  
-  public Collection<? extends GrantedAuthority> getAuthorities() {        
-      return new HashSet<GrantedAuthority>();
+  private String password;
+
+  // Récupère les autorisations de l'utilisateur (dans ce cas, une collection vide)
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return new HashSet<GrantedAuthority>();
   }
 
+  // Indique si le compte de l'utilisateur est expiré (toujours actif)
   @Override
   public boolean isAccountNonExpired() {
     return true;
   }
 
+  // Indique si le compte de l'utilisateur est verrouillé (jamais verrouillé)
   @Override
   public boolean isAccountNonLocked() {
     return true;
   }
 
+  // Indique si les informations d'identification de l'utilisateur sont expirées (jamais expirées)
   @Override
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
+  // Indique si le compte de l'utilisateur est activé (toujours activé)
   @Override
   public boolean isEnabled() {
     return true;
   }
 
+  // Compare cet utilisateur avec un autre objet
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -58,5 +69,5 @@ public class UserDetailsImpl implements UserDetails {
       return false;
     UserDetailsImpl user = (UserDetailsImpl) o;
     return Objects.equals(id, user.id);
-  } 
+  }
 }

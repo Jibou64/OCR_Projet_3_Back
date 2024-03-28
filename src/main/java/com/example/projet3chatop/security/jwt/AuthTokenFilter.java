@@ -28,29 +28,38 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     try {
+      // Récupération du jeton JWT de l'en-tête de la requête
       String jwt = parseJwt(request);
       if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+        // Extraction du nom d'utilisateur à partir du jeton JWT
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
+        // Chargement des détails de l'utilisateur à partir du service UserDetailsService
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        // Création d'une instance d'authentification basée sur le jeton JWT et les détails de l'utilisateur
         UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
+        // Définition de l'authentification dans le contexte de sécurité
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
+      // Gestion des erreurs
       logger.error("Cannot set user authentication: {}", e);
     }
 
+    // Poursuite de la chaîne de filtres
     filterChain.doFilter(request, response);
   }
 
+  // Méthode pour extraire le jeton JWT de l'en-tête de la requête
   private String parseJwt(HttpServletRequest request) {
     String headerAuth = request.getHeader("Authorization");
 
