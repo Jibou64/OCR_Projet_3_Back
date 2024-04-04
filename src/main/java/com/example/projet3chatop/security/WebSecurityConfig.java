@@ -62,11 +62,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/api/auth/**").permitAll() // Les endpoints d'authentification sont accessibles à tous
-            .antMatchers("/api/**").authenticated() // Tous les autres endpoints nécessitent une authentification
-            .anyRequest().authenticated(); // Tout autre requête nécessite une authentification
+            .authorizeRequests().antMatchers("/api/auth/**",
+                    "/v2/api-docs",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "swagger-ressources",
+                    "swagger-ressources/**",
+                    "configuration/ui",
+                    "configuration/security",
+                    "swagger-ui/**",
+                    "webjars/**",
+                    "swagger-ui.html"
+                    ).permitAll();
 
-    // Ajout du filtre de jeton d'authentification avant le filtre UsernamePasswordAuthenticationFilter
+
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+             //Les endpoints d'authentification sont accessibles à tous
+
   }
 }

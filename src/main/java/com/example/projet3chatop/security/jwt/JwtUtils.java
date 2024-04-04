@@ -39,6 +39,10 @@ public class JwtUtils {
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
   }
 
+  public String getNameFromJwtToken(String token) {
+    return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+  }
+
   // Méthode pour valider un token JWT
   public boolean validateJwtToken(String authToken) {
     try {

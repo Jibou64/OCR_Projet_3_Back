@@ -25,7 +25,7 @@ public class UserDto {
     private String email;
 
     // Nom de l'utilisateur, limité à 20 caractères
-    @NonNull
+
     @Size(max = 20)
     private String name;
 
