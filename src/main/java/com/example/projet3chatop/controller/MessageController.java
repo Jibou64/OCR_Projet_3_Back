@@ -31,6 +31,6 @@ public class MessageController {
         messageService.saveMessage(messageMapper.toEntity(messageDto));
 
         // Réponse indiquant que le message a été envoyé avec succès.
-        return ResponseEntity.ok("Message Send with Succes !");
+        return ResponseEntity.ok().body("{\"message\": \"Message envoyé avec succès !\"}");
     }
 }

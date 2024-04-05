@@ -22,12 +22,11 @@ public class JwtUtils {
   private int jwtExpirationMs;
 
   // Méthode pour générer un token JWT à partir d'une authentification
-  public String generateJwtToken(Authentication authentication) {
+  public String generateJwtToken(String email) {
 
-    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
     return Jwts.builder()
-            .setSubject(userPrincipal.getUsername())
+            .setSubject(email)
             .setIssuedAt(new Date())
             .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)

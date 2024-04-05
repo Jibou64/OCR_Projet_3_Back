@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashMap;
 import java.util.List;
 
 @RequestMapping("/api/rentals")
@@ -63,8 +64,14 @@ public class RentalController {
 
     // Endpoint pour récupérer toutes les locations.
     @GetMapping
-    public List<RentalDto> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
-        return rentalMapper.listRentalToDto(rentalService.getAllRentals());
+    public HashMap<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
+
+
+
+
+        HashMap<String, List<RentalDto>> map = new HashMap<>();
+        map.put("rentals", rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList());
+        return map;
     }
 
     // Endpoint pour mettre à jour une location par son identifiant.

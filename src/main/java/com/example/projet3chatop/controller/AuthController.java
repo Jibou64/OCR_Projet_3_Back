@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.example.projet3chatop.dto.UserDto;
 import com.example.projet3chatop.entity.User;
+import com.example.projet3chatop.exception.EmailAlreadyUsed;
 import com.example.projet3chatop.mapper.UserMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,9 @@ import com.example.projet3chatop.payload.response.MessageResponse;
 import com.example.projet3chatop.repository.UserRepository;
 import com.example.projet3chatop.security.jwt.JwtUtils;
 import com.example.projet3chatop.security.services.UserDetailsImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -46,40 +50,41 @@ public class AuthController {
 
     // Endpoint pour l'authentification d'un utilisateur.
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public Map<String, String> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(loginRequest.getEmail());
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        // Réponse contenant le token JWT et les informations de l'utilisateur.
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getName()));
+        Map<String,String> map=new HashMap<>();
+        map.put("token", jwtUtils.generateJwtToken((loginRequest.getEmail())));
+
+        return map;
     }
 
     // Endpoint pour l'inscription d'un nouvel utilisateur.
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public Map<String, String> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already taken!"));
+            throw new EmailAlreadyUsed();
         }
 
         // Création d'un nouvel utilisateur avec le mot de passe crypté.
         User user = new User(
                 signUpRequest.getEmail(),
                 false,
-                passwordEncoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getName()
+                signUpRequest.getName(),
+                passwordEncoder.encode(signUpRequest.getPassword())
         );
 
         userRepository.save(user);
 
+        Map<String,String> map=new HashMap<>();
+        map.put("token", jwtUtils.generateJwtToken(signUpRequest.getEmail()));
+
         // Réponse indiquant que l'utilisateur a été enregistré avec succès.
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return  map;
     }
 
     // Endpoint pour récupérer les détails du profil de l'utilisateur actuellement connecté.
