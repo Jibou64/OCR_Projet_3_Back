@@ -1,11 +1,8 @@
 package com.example.projet3chatop.controller;
 
 import com.example.projet3chatop.dto.MessageDto;
-import com.example.projet3chatop.entity.Message;
 import com.example.projet3chatop.mapper.MessageMapper;
-import com.example.projet3chatop.repository.MessageRepository;
 import com.example.projet3chatop.service.MessageService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +20,13 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    // Endpoint pour créer un nouveau message.
+    // Endpoint to create a new message.
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody MessageDto messageDto) {
-        // Conversion du DTO en entité Message et sauvegarde dans le service.
+        // Convert DTO to Message entity and save it in the service.
         messageService.saveMessage(messageMapper.toEntity(messageDto));
-
-        // Réponse indiquant que le message a été envoyé avec succès.
-        return ResponseEntity.ok().body("{\"message\": \"Message envoyé avec succès !\"}");
+        // Response indicating that the message has been successfully sent.
+        return ResponseEntity.ok().body("{\"message\": \"Message sent successfully!\"}");
     }
 }

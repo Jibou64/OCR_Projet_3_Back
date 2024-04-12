@@ -24,39 +24,38 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
   @Autowired
   UserDetailsServiceImpl userDetailsService;
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
 
-  // Bean pour fournir le filtre de jeton d'authentification
+  // Bean to provide authentication token filter
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
     return new AuthTokenFilter();
   }
 
-  // Configuration de l'authentification via le service UserDetailsService
+  // Configuration for authentication using UserDetailsService
   @Override
   public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
     authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
   }
 
-  // Bean pour fournir le gestionnaire d'authentification
+  // Bean to provide authentication manager
   @Bean
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
 
-  // Bean pour fournir un encodeur de mot de passe
+  // Bean to provide a password encoder
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
-  // Configuration des règles de sécurité HTTP
+  // Configuration of HTTP security rules
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
@@ -73,11 +72,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "swagger-ui/**",
                     "webjars/**",
                     "swagger-ui.html"
-                    ).permitAll();
+            ).permitAll();
 
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-             //Les endpoints d'authentification sont accessibles à tous
+    //Authentication endpoints are accessible to all
 
   }
 }

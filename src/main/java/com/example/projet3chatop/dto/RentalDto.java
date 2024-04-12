@@ -17,24 +17,26 @@ import javax.validation.constraints.NotNull;
 @NonNull
 public class RentalDto {
 
-    // Identifiant de la location
+    // Rental ID
     @Id
     private int Id;
 
-    // Propriétaire de la location
+    // Owner of the rental
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User ownerId;
 
-    // Nom de la location
+    private String picture;
+
+    // Name of the rental
     private String name;
 
-    // Surface de la location
+    // Surface area of the rental
     private float surface;
 
-    // Prix de la location
+    // Price of the rental
     private float price;
 
-    // Description de la location
+    // Description of the rental
     private String description;
 }

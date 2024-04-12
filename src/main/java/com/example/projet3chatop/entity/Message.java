@@ -20,31 +20,32 @@ import java.util.Date;
 @Table(name = "message")
 public class Message {
 
-    // Identifiant du message
+
+    // Message ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Location liée à ce message
+    // Rental associated with this message
     @ManyToOne
     @JoinColumn(name = "rental_id", referencedColumnName = "id")
     private Rental rentalId;
 
-    // Utilisateur qui a envoyé ce message
+    // User who sent this message
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
 
-    // Contenu du message, limité à 2000 caractères
+    // Message content, limited to 2000 characters
     @NotNull
     @Size(max=2000)
     private String message;
 
-    // Date de création du message
+    // Message creation date
     @CreatedDate
     private Date created_at = new Date();
 
-    // Date de la dernière mise à jour du message
+    // Date of the last update of the message
     @UpdateTimestamp
     private Date updated_at;
 }

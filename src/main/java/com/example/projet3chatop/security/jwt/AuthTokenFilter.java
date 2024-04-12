@@ -30,16 +30,16 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
           throws ServletException, IOException {
     try {
-      // Récupération du jeton JWT de l'en-tête de la requête
+      // Retrieving JWT token from request header
       String jwt = parseJwt(request);
       if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-        // Extraction du nom d'utilisateur à partir du jeton JWT
+        // Extracting username from JWT token
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        // Chargement des détails de l'utilisateur à partir du service UserDetailsService
+        // Loading user details from UserDetailsService
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        // Création d'une instance d'authentification basée sur le jeton JWT et les détails de l'utilisateur
+        // Creating an authentication instance based on JWT token and user details
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -47,19 +47,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        // Définition de l'authentification dans le contexte de sécurité
+        // Setting authentication in security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      // Gestion des erreurs
+      // Handling errors
       logger.error("Cannot set user authentication: {}", e);
     }
 
-    // Poursuite de la chaîne de filtres
+    // Continuing filter chain
     filterChain.doFilter(request, response);
   }
 
-  // Méthode pour extraire le jeton JWT de l'en-tête de la requête
+  // Method to extract JWT token from request header
   private String parseJwt(HttpServletRequest request) {
     String headerAuth = request.getHeader("Authorization");
 

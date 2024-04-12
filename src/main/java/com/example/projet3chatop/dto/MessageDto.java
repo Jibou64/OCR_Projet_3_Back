@@ -14,27 +14,27 @@ import java.util.Date;
 @NoArgsConstructor
 public class MessageDto {
 
-    // Identifiant du message
+    // Message ID
     private Long id;
 
-    // Identifiant de la location liée à ce message
+    // ID of the rental associated with this message
     @NotNull
     private Long rental_id;
 
-    // Identifiant de l'utilisateur qui a envoyé ce message
+    // ID of the user who sent this message
     @NotNull
     private Long user_id;
 
-    // Contenu du message, limité à 2000 caractères
+    // Message content, limited to 2000 characters
     @NotNull
     @Size(max=2000)
     private String message;
 
-    // Date de création du message
+    // Message creation date
     @CreatedDate
     private Date created_at = new Date();
 
-    // Date de la dernière mise à jour du message
+    // Date of the last update of the message
     @UpdateTimestamp
     private Date updated_at;
 }

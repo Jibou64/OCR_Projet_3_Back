@@ -17,6 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +36,7 @@ public class RentalController {
     @Autowired
     private RentalService rentalService;
 
-    // Endpoint pour créer une nouvelle location.
+    // Endpoint to create a new rental.
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RentalDto createRental(
             @RequestPart("picture") MultipartFile multipartFile,
@@ -42,41 +46,42 @@ public class RentalController {
             @RequestParam("description") @Size(max=2000) String description,
             @RequestHeader(value="Authorization", required = false) String jwt
     ) throws Exception {
-        // Obtention du nom d'utilisateur à partir du contexte de sécurité.
+        // Getting username from security context.
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // Création de l'objet Rental à partir des paramètres et sauvegarde dans le service.
+
+        // Saving the image to a directory on the server
+        String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
+        Files.copy(multipartFile.getInputStream(), Paths.get(imagePath), StandardCopyOption.REPLACE_EXISTING);
+
+        // Creating Rental object from parameters and saving it in the service.
         Rental candidate = Rental.builder()
                 .ownerId(userService.getName(username).get())
                 .name(name)
                 .surface(surface)
                 .price(price)
                 .description(description)
-                .picture(multipartFile.getBytes())
+                .picture(imagePath)
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
 
-    // Endpoint pour récupérer une location par son identifiant.
+    // Endpoint to get a rental by its id.
     @GetMapping("/{id}")
     public RentalDto getRentalById(@RequestHeader(value="Authorization", required=false) String jwt, @PathVariable Long id) {
         return rentalMapper.rentalToDto(rentalService.getRentalById(id));
     }
 
-    // Endpoint pour récupérer toutes les locations.
+    // Endpoint to get all rentals.
     @GetMapping
     public HashMap<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
-
-
-
-
         HashMap<String, List<RentalDto>> map = new HashMap<>();
         map.put("rentals", rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList());
         return map;
     }
 
-    // Endpoint pour mettre à jour une location par son identifiant.
+    // Endpoint to update a rental by its id.
     @PutMapping("/{id}")
-    public RentalDto updateRentalById(@RequestHeader(value = "Authorization", required = false) String jwt,
+    public RentalDto updateRentalById(@RequestHeader(value = "Authorization", required = false)
                                       @PathVariable Long id,
                                       @RequestBody RentalDto newRentalDto) {
         return rentalMapper.rentalToDto(rentalService.updateRentalById(id, newRentalDto));

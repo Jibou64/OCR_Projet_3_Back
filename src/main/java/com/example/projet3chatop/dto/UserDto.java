@@ -14,33 +14,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-
-    // Identifiant de l'utilisateur
+    // User ID
     private Long id;
 
-    // Email de l'utilisateur, limité à 50 caractères
+    // User email, limited to 50 characters
     @NonNull
     @Size(max = 50)
     @Email
     private String email;
 
-    // Nom de l'utilisateur, limité à 20 caractères
-
+    // User name, limited to 20 characters
     @Size(max = 20)
     private String name;
 
-    // Indique si l'utilisateur est un administrateur ou non
+    // Indicates whether the user is an administrator or not
     @NonNull
     private boolean admin;
 
-    // Mot de passe de l'utilisateur, ignoré lors de la sérialisation JSON
+    // User password, ignored during JSON serialization
     @JsonIgnore
     @Size(max = 120)
     private String password;
 
-    // Date de création de l'utilisateur
+    // User creation date
     private LocalDateTime createdAt;
 
-    // Date de la dernière mise à jour de l'utilisateur
+    // Date of the last update of the user
     private LocalDateTime updatedAt;
 }

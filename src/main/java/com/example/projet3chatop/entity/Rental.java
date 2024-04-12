@@ -19,44 +19,43 @@ import java.util.List;
 @Entity
 @Table(name = "rentals")
 public class Rental {
-
-    // Identifiant de la location
+    // Rental ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Nom de la location
+    // Name of the rental
     @Column(name = "name")
     private String name;
 
-    // Surface de la location
+    // Surface area of the rental
     @Column(name = "surface")
     private float surface;
 
-    // Prix de la location
+    // Price of the rental
     @Column(name = "price")
     private float price;
 
-    // Description de la location
+    // Description of the rental
     @Column(name = "description")
     private String description;
 
-    // Image de la location (stockée sous forme de tableau de bytes)
+    // Image of the rental (stored as byte array)
     @Column(name = "picture")
-    @Lob
-    private byte[] picture;
 
-    // Propriétaire de la location
+    private String picture;
+
+    // Owner of the rental
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User ownerId;
 
-    // Date de création de la location
+    // Creation date of the rental
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // Date de la dernière mise à jour de la location
+    // Date of the last update of the rental
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

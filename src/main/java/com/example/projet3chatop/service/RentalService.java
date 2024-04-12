@@ -20,7 +20,7 @@ public class RentalService {
     @Autowired
     private final RentalRepository rentalRepository;
 
-    // Méthode pour mettre à jour une location par son ID
+    // Method to update a rental by its ID
     public Rental updateRentalById(Long id, RentalDto newRentalDto) {
         Rental finalRental = null;
         Optional<Rental> actualOptionalRental = rentalRepository.findById(id);
@@ -39,17 +39,17 @@ public class RentalService {
         return finalRental;
     }
 
-    // Méthode pour créer une nouvelle location
+    // Method to create a new rental
     public Rental create(Rental rental) {
         return rentalRepository.save(rental);
     }
 
-    // Méthode pour récupérer une location par son ID
+    // Method to get a rental by its ID
     public Rental getRentalById(final Long id) throws EntityNotFoundException {
         return rentalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Rental not found with id: " + id));
     }
 
-    // Méthode pour récupérer toutes les locations
+    // Method to get all rentals
     public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
     }

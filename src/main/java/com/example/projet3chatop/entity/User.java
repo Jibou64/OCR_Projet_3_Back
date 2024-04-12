@@ -26,39 +26,38 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class User {
-
-    // Identifiant de l'utilisateur
+    // User ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Email de l'utilisateur, unique et limité à 50 caractères
+    // User email, unique and limited to 50 characters
     @NonNull
     @Size(max = 50)
     @Email
     private String email;
 
-    // Indique si l'utilisateur est un administrateur ou non
+    // Indicates whether the user is an administrator or not
     @NonNull
     private boolean admin;
 
-    // Nom de l'utilisateur, limité à 20 caractères
+    // User name, limited to 20 characters
     @NonNull
     @Size(max = 20)
     @Column(name = "name")
     private String name;
 
-    // Mot de passe de l'utilisateur, limité à 120 caractères
+    // User password, limited to 120 characters
     @NonNull
     @Size(max = 120)
     private String password;
 
-    // Date de création de l'utilisateur
+    // User creation date
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // Date de la dernière mise à jour de l'utilisateur
+    // Date of the last update of the user
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

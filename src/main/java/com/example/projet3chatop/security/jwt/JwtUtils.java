@@ -21,10 +21,8 @@ public class JwtUtils {
   @Value("${oc.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
-  // Méthode pour générer un token JWT à partir d'une authentification
+  // Method to generate a JWT token from authentication
   public String generateJwtToken(String email) {
-
-
     return Jwts.builder()
             .setSubject(email)
             .setIssuedAt(new Date())
@@ -33,16 +31,12 @@ public class JwtUtils {
             .compact();
   }
 
-  // Méthode pour récupérer le nom d'utilisateur à partir d'un token JWT
+  // Method to get username from JWT token
   public String getUserNameFromJwtToken(String token) {
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
   }
 
-  public String getNameFromJwtToken(String token) {
-    return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-  }
-
-  // Méthode pour valider un token JWT
+  // Method to validate a JWT token
   public boolean validateJwtToken(String authToken) {
     try {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

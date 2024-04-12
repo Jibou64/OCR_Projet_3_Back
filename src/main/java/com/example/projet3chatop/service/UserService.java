@@ -11,22 +11,22 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Constructeur prenant en paramètre le repository UserRepository
+    // Constructor taking UserRepository repository as parameter
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // Méthode pour récupérer un utilisateur par son email
+    // Method to retrieve a user by their email
     public Optional<User> getName(String name) {
         return this.userRepository.findByEmail(name);
     }
 
-    // Méthode pour supprimer un utilisateur par son ID
+    // Method to delete a user by their ID
     public void delete(Long id) {
         this.userRepository.deleteById(id);
     }
 
-    // Méthode pour trouver un utilisateur par son ID
+    // Method to find a user by their ID
     public User findById(Long id) {
         return this.userRepository.findById(id).orElse(null);
     }

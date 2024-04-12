@@ -18,7 +18,7 @@ public class MessageService {
     @Autowired
     private MessageMapper messageMapper;
 
-    // Méthode pour enregistrer un message dans la base de données
+    // Method to save a message in the database
     public void saveMessage(Message message) {
         messageRepository.save(message);
     }
