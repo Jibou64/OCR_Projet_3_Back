@@ -6,7 +6,9 @@ import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.service.RentalService;
 import com.example.projet3chatop.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +28,12 @@ import java.util.List;
 
 @RequestMapping("/api/rentals")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RentalController {
-
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RentalMapper rentalMapper;
-    @Autowired
-    private RentalService rentalService;
+    private final UserService userService;
+    private final RentalMapper rentalMapper;
+    private final RentalService rentalService;
+    private final Environment env;
 
     // Endpoint to create a new rental.
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -49,9 +48,11 @@ public class RentalController {
         // Getting username from security context.
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        var path = env.getProperty("java.io.tmp", "").concat(multipartFile.getOriginalFilename());
+
         // Saving the image to a directory on the server
-        String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
-        Files.copy(multipartFile.getInputStream(), Paths.get(imagePath), StandardCopyOption.REPLACE_EXISTING);
+        //String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
+        Files.copy(multipartFile.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
 
         // Creating Rental object from parameters and saving it in the service.
         Rental candidate = Rental.builder()
@@ -60,7 +61,7 @@ public class RentalController {
                 .surface(surface)
                 .price(price)
                 .description(description)
-                .picture(imagePath)
+                .picture(path)
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
