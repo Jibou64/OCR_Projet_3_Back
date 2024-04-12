@@ -1,9 +1,6 @@
 package com.example.projet3chatop.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -12,10 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "message")
 public class Message {
@@ -48,4 +42,12 @@ public class Message {
     // Date of the last update of the message
     @UpdateTimestamp
     private Date updated_at;
+
+    public void addUser(User user) {
+        this.userId = user;
+    }
+
+    public void addRental(Rental rental){
+        this.rentalId = rental;
+    }
 }

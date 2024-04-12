@@ -5,7 +5,9 @@ import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.repository.RentalRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +15,11 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class RentalService {
-
-    @Autowired
     private final RentalRepository rentalRepository;
+    private final Environment env;
 
     // Method to update a rental by its ID
     public Rental updateRentalById(Long id, RentalDto newRentalDto) {
