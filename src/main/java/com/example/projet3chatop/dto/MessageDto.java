@@ -30,11 +30,7 @@ public class MessageDto {
     @Size(max=2000)
     private String message;
 
-    // Message creation date
-    @CreatedDate
+    // Utilisation de valeurs par défaut pour created_at et updated_at
     private Date created_at = new Date();
-
-    // Date of the last update of the message
-    @UpdateTimestamp
-    private Date updated_at;
+    private Date updated_at = new Date();
 }

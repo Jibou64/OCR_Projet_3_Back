@@ -1,11 +1,12 @@
 package com.example.projet3chatop.controller;
-
+import java.io.IOException;
 import com.example.projet3chatop.dto.RentalDto;
 import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.service.RentalService;
 import com.example.projet3chatop.service.UserService;
 import lombok.AllArgsConstructor;
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
+import java.nio.file.Path;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -26,32 +29,32 @@ import java.util.List;
 
 @RequestMapping("/api/rentals")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RentalController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RentalMapper rentalMapper;
-    @Autowired
-    private RentalService rentalService;
+    private final UserService userService;
+    private final RentalMapper rentalMapper;
+    private final RentalService rentalService;
+    private final Environment env;
+
 
     // Endpoint to create a new rental.
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RentalDto createRental(
             @RequestPart("picture") MultipartFile multipartFile,
-            @RequestParam("name") @NotBlank @Size(max=63) String name,
+            @RequestParam("name") @NotBlank @Size(max = 63) String name,
             @RequestParam("surface") @Min(0) float surface,
             @RequestParam("price") @Min(0) float price,
-            @RequestParam("description") @Size(max=2000) String description,
-            @RequestHeader(value="Authorization", required = false) String jwt
+            @RequestParam("description") @Size(max = 2000) String description,
+            @RequestHeader(value = "Authorization", required = false) String jwt
     ) throws Exception {
         // Getting username from security context.
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // Saving the image to a directory on the server
+        var path = env.getProperty("java.io.tmpdir", "").concat(multipartFile.getOriginalFilename());
+
         String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
-        Files.copy(multipartFile.getInputStream(), Paths.get(imagePath), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(multipartFile.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
 
         // Creating Rental object from parameters and saving it in the service.
         Rental candidate = Rental.builder()
@@ -60,14 +63,15 @@ public class RentalController {
                 .surface(surface)
                 .price(price)
                 .description(description)
-                .picture(imagePath)
+                .picture(path)
+                .imageData(multipartFile.getBytes())
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
 
     // Endpoint to get a rental by its id.
     @GetMapping("/{id}")
-    public RentalDto getRentalById(@RequestHeader(value="Authorization", required=false) String jwt, @PathVariable Long id) {
+    public RentalDto getRentalById(@RequestHeader(value = "Authorization", required = false) String jwt, @PathVariable Long id) {
         return rentalMapper.rentalToDto(rentalService.getRentalById(id));
     }
 
@@ -75,7 +79,16 @@ public class RentalController {
     @GetMapping
     public HashMap<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
         HashMap<String, List<RentalDto>> map = new HashMap<>();
-        map.put("rentals", rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList());
+
+        var rentalsDto = rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList();
+
+        rentalsDto = rentalsDto.stream().peek(r -> {
+            var resourceLink = "http://localhost:3001/files/".concat(r.getPicture());
+
+            r.setPicture(resourceLink);
+        }).toList();
+
+        map.put("rentals", rentalsDto);
         return map;
     }
 

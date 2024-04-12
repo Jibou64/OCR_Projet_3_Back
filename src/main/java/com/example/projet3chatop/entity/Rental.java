@@ -19,6 +19,8 @@ import java.util.List;
 @Entity
 @Table(name = "rentals")
 public class Rental {
+
+    private byte [] imageData;
     // Rental ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

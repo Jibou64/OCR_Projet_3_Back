@@ -8,16 +8,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class RentalService {
 
-    @Autowired
+    private final Environment env;
     private final RentalRepository rentalRepository;
 
     // Method to update a rental by its ID

@@ -29,7 +29,7 @@ public class User {
     // User ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     // User email, unique and limited to 50 characters
     @NonNull
