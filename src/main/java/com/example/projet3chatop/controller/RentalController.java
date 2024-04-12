@@ -20,9 +20,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,16 +42,16 @@ public class RentalController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RentalDto createRental(
             @RequestPart("picture") MultipartFile multipartFile,
-            @RequestParam("name") @NotBlank @Size(max=63) String name,
+            @RequestParam("name") @NotBlank @Size(max = 63) String name,
             @RequestParam("surface") @Min(0) float surface,
             @RequestParam("price") @Min(0) float price,
-            @RequestParam("description") @Size(max=2000) String description,
-            @RequestHeader(value="Authorization", required = false) String jwt
+            @RequestParam("description") @Size(max = 2000) String description,
+            @RequestHeader(value = "Authorization", required = false) String jwt
     ) throws Exception {
         // Getting username from security context.
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        var path = env.getProperty("java.io.tmp", "").concat(multipartFile.getOriginalFilename());
+        var path = env.getProperty("java.io.tmpdir", "").concat(multipartFile.getOriginalFilename());
 
         // Saving the image to a directory on the server
         //String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
@@ -62,13 +65,14 @@ public class RentalController {
                 .price(price)
                 .description(description)
                 .picture(path)
+                .imageData(multipartFile.getBytes())
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
 
     // Endpoint to get a rental by its id.
     @GetMapping("/{id}")
-    public RentalDto getRentalById(@RequestHeader(value="Authorization", required=false) String jwt, @PathVariable Long id) {
+    public RentalDto getRentalById(@RequestHeader(value = "Authorization", required = false) String jwt, @PathVariable Long id) {
         return rentalMapper.rentalToDto(rentalService.getRentalById(id));
     }
 
@@ -76,7 +80,15 @@ public class RentalController {
     @GetMapping
     public HashMap<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
         HashMap<String, List<RentalDto>> map = new HashMap<>();
-        map.put("rentals", rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList());
+        var rentalsDto = rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList();
+
+        rentalsDto = rentalsDto.stream().peek(r -> {
+            var resourceLink = "http://localhost:3001/files/".concat(r.getPicture());
+
+            r.setPicture(resourceLink);
+        }).toList();
+
+        map.put("rentals", rentalsDto);
         return map;
     }
 
