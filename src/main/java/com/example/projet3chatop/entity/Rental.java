@@ -3,13 +3,9 @@ package com.example.projet3chatop.entity;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.sql.ConnectionBuilder;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Getter

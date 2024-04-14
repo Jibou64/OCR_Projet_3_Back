@@ -1,14 +1,12 @@
 package com.example.projet3chatop.controller;
-import java.io.IOException;
 import com.example.projet3chatop.dto.RentalDto;
 import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.service.RentalService;
 import com.example.projet3chatop.service.UserService;
-import lombok.AllArgsConstructor;
-import java.util.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
-import java.nio.file.Path;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -53,8 +50,9 @@ public class RentalController {
 
         var path = env.getProperty("java.io.tmpdir", "").concat(multipartFile.getOriginalFilename());
 
-        String imagePath = "C://Users//jibril.benzeghioua//Desktop//ImagesBack/" + multipartFile.getOriginalFilename();
+        String imagePath =  multipartFile.getOriginalFilename();
         Files.copy(multipartFile.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
         // Creating Rental object from parameters and saving it in the service.
         Rental candidate = Rental.builder()
@@ -63,16 +61,29 @@ public class RentalController {
                 .surface(surface)
                 .price(price)
                 .description(description)
-                .picture(path)
+                .picture(imagePath)
                 .imageData(multipartFile.getBytes())
+                .createdAt(currentDateTime)
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
 
     // Endpoint to get a rental by its id.
     @GetMapping("/{id}")
-    public RentalDto getRentalById(@RequestHeader(value = "Authorization", required = false) String jwt, @PathVariable Long id) {
-        return rentalMapper.rentalToDto(rentalService.getRentalById(id));
+    public ResponseEntity<RentalDto> getRentalById(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String jwt) {
+        Rental rental = rentalService.getRentalById(id);
+
+        if (rental == null) {
+            return ResponseEntity.notFound().build();
+        }
+        RentalDto rentalDto = rentalMapper.rentalToDto(rental);
+        String resourceLink = "http://localhost:3001/files/" + rentalDto.getPicture();
+        rentalDto.setPicture(resourceLink);
+        rentalDto.setUpdatedAt(rental.getUpdatedAt());
+        rentalDto.setCreatedAt(rental.getCreatedAt());
+
+
+        return ResponseEntity.ok().body(rentalDto);
     }
 
     // Endpoint to get all rentals.
@@ -97,6 +108,8 @@ public class RentalController {
     public RentalDto updateRentalById(@RequestHeader(value = "Authorization", required = false)
                                       @PathVariable Long id,
                                       @RequestBody RentalDto newRentalDto) {
+
+
         return rentalMapper.rentalToDto(rentalService.updateRentalById(id, newRentalDto));
     }
 }

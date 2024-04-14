@@ -48,6 +48,7 @@ public class RentalService {
 
     // Method to get a rental by its ID
     public Rental getRentalById(final Long id) throws EntityNotFoundException {
+
         return rentalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Rental not found with id: " + id));
     }
 

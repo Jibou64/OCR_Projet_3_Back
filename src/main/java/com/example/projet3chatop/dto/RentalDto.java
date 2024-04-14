@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -39,4 +40,8 @@ public class RentalDto {
 
     // Description of the rental
     private String description;
+
+    private LocalDateTime updatedAt;
+
+    private LocalDateTime createdAt;
 }
