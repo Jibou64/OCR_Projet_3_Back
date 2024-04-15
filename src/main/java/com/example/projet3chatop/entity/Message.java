@@ -1,9 +1,4 @@
 package com.example.projet3chatop.entity;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import lombok.*;
@@ -16,7 +11,6 @@ import java.util.Date;
 @Entity
 @Table(name = "message")
 public class Message {
-
 
     // Message ID
     @Id
@@ -40,17 +34,18 @@ public class Message {
 
     // Message creation date
     @CreatedDate
-    private Date created_at = new Date();
+    private Date created_at = new Date(); // Represents the creation date of the message
 
     // Date of the last update of the message
     @UpdateTimestamp
-    private Date updated_at;
+    private Date updated_at; // Represents the last update date of the message
 
-
+    // Method to set the user who sent the message
     public void addUser(User user) {
         this.userId = user;
     }
 
+    // Method to set the rental associated with the message
     public void addRental(Rental rental){
         this.rentalId = rental;
     }

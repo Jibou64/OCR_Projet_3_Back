@@ -2,9 +2,7 @@ package com.example.projet3chatop.controller;
 
 import com.example.projet3chatop.dto.MessageDto;
 import com.example.projet3chatop.mapper.MessageMapper;
-import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.service.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -6,7 +6,6 @@ import com.example.projet3chatop.payload.request.SignupRequest;
 import com.example.projet3chatop.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

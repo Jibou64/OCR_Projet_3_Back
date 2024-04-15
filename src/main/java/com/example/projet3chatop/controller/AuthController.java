@@ -1,9 +1,7 @@
 package com.example.projet3chatop.controller;
-
 import javax.validation.Valid;
 import com.example.projet3chatop.dto.UserDto;
 import com.example.projet3chatop.entity.User;
-import com.example.projet3chatop.exception.EmailAlreadyUsed;
 import com.example.projet3chatop.mapper.UserMapper;
 import com.example.projet3chatop.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,20 +70,17 @@ public class AuthController {
     // Endpoint to retrieve profile details of the currently logged-in user.
     @GetMapping("/me")
     public UserDto userProfile(@RequestHeader(value="Authorization",required=false) String jwt) {
-        // Récupérer l'utilisateur à partir du service en utilisant le nom d'utilisateur extrait du jeton JWT.
+
         User user = userService.findbyEmail(jwtUtils.getUserNameFromJwtToken(jwt.substring(7)));
 
         if (user == null) {
             return null;
         }
 
-        // Créer un DTO pour l'utilisateur
         UserDto userDto = userMapper.toDto(user);
 
-        // Récupérer et assigner la date de création de l'utilisateur au DTO
         userDto.setCreated_at(user.getCreated_at());
 
-        // Retourner le DTO de l'utilisateur
         return userDto;
     }
 }

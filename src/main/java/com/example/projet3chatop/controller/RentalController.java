@@ -4,9 +4,7 @@ import com.example.projet3chatop.entity.Rental;
 import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.service.RentalService;
 import com.example.projet3chatop.service.UserService;
-
 import java.time.LocalDateTime;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -47,9 +44,7 @@ public class RentalController {
     ) throws Exception {
         // Getting username from security context.
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         var path = env.getProperty("java.io.tmpdir", "").concat(multipartFile.getOriginalFilename());
-
         String imagePath =  multipartFile.getOriginalFilename();
         Files.copy(multipartFile.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
         LocalDateTime currentDateTime = LocalDateTime.now();

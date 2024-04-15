@@ -1,6 +1,5 @@
 package com.example.projet3chatop.service;
 
-import com.example.projet3chatop.dto.MessageDto;
 import com.example.projet3chatop.entity.Message;
 import com.example.projet3chatop.mapper.MessageMapper;
 import com.example.projet3chatop.repository.MessageRepository;

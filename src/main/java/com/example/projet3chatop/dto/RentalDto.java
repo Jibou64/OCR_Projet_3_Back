@@ -1,16 +1,13 @@
 package com.example.projet3chatop.dto;
-
 import com.example.projet3chatop.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -28,7 +25,7 @@ public class RentalDto {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User ownerId;
 
-    private String picture;
+    private String picture; // URL of the rental picture
 
     // Name of the rental
     private String name;
@@ -43,9 +40,8 @@ public class RentalDto {
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updated_at;
-
+    private LocalDateTime updated_at; // Timestamp for the last update of the rental information
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime created_at;
+    private LocalDateTime created_at; // Timestamp for the creation of the rental
 }

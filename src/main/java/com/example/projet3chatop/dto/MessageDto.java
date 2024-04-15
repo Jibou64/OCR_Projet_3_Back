@@ -1,9 +1,5 @@
 package com.example.projet3chatop.dto;
-
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -30,7 +26,7 @@ public class MessageDto {
     @Size(max=2000)
     private String message;
 
-    // Utilisation de valeurs par défaut pour created_at et updated_at
-    private Date created_at = new Date();
-    private Date updated_at = new Date();
+    // Using default values for created_at and updated_at
+    private Date created_at = new Date(); // Represents the creation date of the message
+    private Date updated_at = new Date(); // Represents the last update date of the message
 }

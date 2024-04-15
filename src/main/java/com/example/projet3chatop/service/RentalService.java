@@ -1,12 +1,7 @@
 package com.example.projet3chatop.service;
-
 import com.example.projet3chatop.dto.RentalDto;
 import com.example.projet3chatop.entity.Rental;
-import com.example.projet3chatop.mapper.RentalMapper;
 import com.example.projet3chatop.repository.RentalRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
