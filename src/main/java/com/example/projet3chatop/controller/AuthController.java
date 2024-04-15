@@ -75,9 +75,7 @@ public class AuthController {
         // Récupérer l'utilisateur à partir du service en utilisant le nom d'utilisateur extrait du jeton JWT.
         User user = userService.findbyEmail(jwtUtils.getUserNameFromJwtToken(jwt.substring(7)));
 
-        // Vérifier si l'utilisateur existe
         if (user == null) {
-            // Retourner null ou une ResponseEntity avec un code d'erreur approprié si l'utilisateur n'est pas trouvé
             return null;
         }
 
@@ -85,7 +83,7 @@ public class AuthController {
         UserDto userDto = userMapper.toDto(user);
 
         // Récupérer et assigner la date de création de l'utilisateur au DTO
-        userDto.setCreatedAt(user.getCreatedAt());
+        userDto.setCreated_at(user.getCreated_at());
 
         // Retourner le DTO de l'utilisateur
         return userDto;

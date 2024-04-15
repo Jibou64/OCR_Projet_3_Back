@@ -55,10 +55,10 @@ public class User {
     // User creation date
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     // Date of the last update of the user
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_at;
 }

@@ -63,7 +63,7 @@ public class RentalController {
                 .description(description)
                 .picture(imagePath)
                 .imageData(multipartFile.getBytes())
-                .createdAt(currentDateTime)
+                .created_at(currentDateTime)
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));
     }
@@ -79,8 +79,8 @@ public class RentalController {
         RentalDto rentalDto = rentalMapper.rentalToDto(rental);
         String resourceLink = "http://localhost:3001/files/" + rentalDto.getPicture();
         rentalDto.setPicture(resourceLink);
-        rentalDto.setUpdatedAt(rental.getUpdatedAt());
-        rentalDto.setCreatedAt(rental.getCreatedAt());
+        rentalDto.setUpdated_at(rental.getUpdated_at());
+        rentalDto.setCreated_at(rental.getCreated_at());
 
 
         return ResponseEntity.ok().body(rentalDto);

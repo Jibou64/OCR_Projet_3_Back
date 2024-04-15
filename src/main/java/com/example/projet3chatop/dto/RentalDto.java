@@ -1,6 +1,7 @@
 package com.example.projet3chatop.dto;
 
 import com.example.projet3chatop.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +42,10 @@ public class RentalDto {
     // Description of the rental
     private String description;
 
-    private LocalDateTime updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated_at;
 
-    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime created_at;
 }
