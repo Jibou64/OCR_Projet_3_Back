@@ -65,18 +65,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/v2/api-docs",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "swagger-ressources",
-                    "swagger-ressources/**",
-                    "configuration/ui",
-                    "configuration/security",
-                    "swagger-ui/**",
-                    "webjars/**",
-                    "swagger-ui.html"
-            ).permitAll();
-
-
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    //Authentication endpoints are accessible to all
-
+                    "/swagger-resources",
+                    "/swagger-resources/**",
+                    "/configuration/ui",
+                    "/configuration/security",
+                    "/swagger-ui/**",
+                    "/webjars/**",
+                    "/swagger-ui.html"
+            ).permitAll()
+            .and()
+            .formLogin().disable() // Disable default login form
+            .logout().disable() // Disable default logout page
+            .httpBasic().disable() // Disable basic authentication
+            .authorizeRequests()
+            .and()
+            .headers().frameOptions().disable(); // Disable X-Frame-Options for Swagger UI in iframe
   }
 }
