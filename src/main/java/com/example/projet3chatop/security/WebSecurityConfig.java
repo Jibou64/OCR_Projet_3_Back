@@ -94,7 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
-                    "/api/auth/**"
+                    "/api/auth/**",
+                    "/files/**"
             ).permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers(HttpMethod.GET, "/files/**").permitAll()
