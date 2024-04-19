@@ -1,11 +1,13 @@
 package com.example.projet3chatop.security;
 
+import com.example.projet3chatop.controller.RentalController;
 import com.example.projet3chatop.security.jwt.AuthEntryPointJwt;
 import com.example.projet3chatop.security.jwt.AuthTokenFilter;
 import com.example.projet3chatop.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,6 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   UserDetailsServiceImpl userDetailsService;
+
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
@@ -56,29 +59,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   // Configuration of HTTP security rules
+//  @Override
+//  protected void configure(HttpSecurity http) throws Exception {
+//    http.cors().and().csrf().disable()
+//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//            .authorizeRequests().antMatchers("/api/auth/**",
+//                    "/v2/api-docs",
+//                    "/v3/api-docs",
+//                    "/v3/api-docs/**",
+//                    "/swagger-resources",
+//                    "/swagger-resources/**",
+//                    "/configuration/ui",
+//                    "/configuration/security",
+//                    "/swagger-ui/**",
+//                    "/webjars/**",
+//                    "/swagger-ui.html"
+//            ).permitAll()
+//            .and()
+//            .formLogin().disable() // Disable default login form
+//            .logout().disable() // Disable default logout page
+//            .httpBasic().disable() // Disable basic authentication
+//            .authorizeRequests()
+//            .and()
+//            .headers().frameOptions().disable(); // Disable X-Frame-Options for Swagger UI in iframe
+//  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/api/auth/**",
-                    "/v2/api-docs",
-                    "/v3/api-docs",
-                    "/v3/api-docs/**",
-                    "/swagger-resources",
-                    "/swagger-resources/**",
-                    "/configuration/ui",
-                    "/configuration/security",
-                    "/swagger-ui/**",
-                    "/webjars/**",
-                    "/swagger-ui.html"
-            ).permitAll()
-            .and()
-            .formLogin().disable() // Disable default login form
-            .logout().disable() // Disable default logout page
-            .httpBasic().disable() // Disable basic authentication
             .authorizeRequests()
-            .and()
-            .headers().frameOptions().disable(); // Disable X-Frame-Options for Swagger UI in iframe
+            .antMatchers("/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/api/auth/**"
+            ).permitAll()
+            .antMatchers("/api/**").authenticated()
+            .antMatchers(HttpMethod.GET, "/files/**").permitAll()
+            .anyRequest().authenticated();
+
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 }

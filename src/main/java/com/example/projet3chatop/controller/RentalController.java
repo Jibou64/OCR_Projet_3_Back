@@ -57,7 +57,6 @@ public class RentalController {
                 .price(price)
                 .description(description)
                 .picture(imagePath)
-                .imageData(multipartFile.getBytes())
                 .created_at(currentDateTime)
                 .build();
         return rentalMapper.rentalToDto(rentalService.create(candidate));

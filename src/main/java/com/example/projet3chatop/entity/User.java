@@ -39,7 +39,7 @@ public class User {
     @NonNull
     private boolean admin;
 
-    // User name, limited to 20 characters
+    // Username, limited to 20 characters
     @NonNull
     @Size(max = 20)
     @Column(name = "name")

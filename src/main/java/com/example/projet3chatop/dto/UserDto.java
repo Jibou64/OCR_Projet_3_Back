@@ -27,9 +27,6 @@ public class UserDto {
     @Size(max = 20)
     private String name;
 
-    // Indicates whether the user is an administrator or not
-    @NonNull
-    private boolean admin;
 
     // User password, ignored during JSON serialization
     @JsonIgnore

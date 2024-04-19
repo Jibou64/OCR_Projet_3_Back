@@ -19,21 +19,15 @@ public class RentalService {
 
     // Method to update a rental by its ID
     public Rental updateRentalById(Long id, RentalDto newRentalDto) {
-        Rental finalRental = null;
-        Optional<Rental> actualOptionalRental = rentalRepository.findById(id);
 
-        if (actualOptionalRental.isPresent()) {
-            Rental actualRental = actualOptionalRental.get();
-            actualRental.setPrice(newRentalDto.getPrice());
-            actualRental.setDescription(newRentalDto.getDescription());
-            actualRental.setName(newRentalDto.getName());
-            actualRental.setSurface(newRentalDto.getSurface());
-            actualRental.setOwnerId(newRentalDto.getOwnerId());
+        Rental existingRental = getRentalById(id);
+        existingRental.setPrice(newRentalDto.getPrice());
+        existingRental.setDescription(newRentalDto.getDescription());
+        existingRental.setName(newRentalDto.getName());
+        existingRental.setSurface(newRentalDto.getSurface());
+        existingRental.setOwnerId(newRentalDto.getOwnerId());
 
-            finalRental = rentalRepository.save(actualRental);
-        }
-
-        return finalRental;
+        return rentalRepository.save(existingRental);
     }
 
     // Method to create a new rental
