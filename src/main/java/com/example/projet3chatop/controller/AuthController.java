@@ -17,7 +17,7 @@ import com.example.projet3chatop.security.jwt.JwtUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -63,7 +63,6 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtUtils.generateJwtToken(registeredUser.getEmail()));
 
-        // Response indicating successful user registration.
         return response;
     }
 
@@ -84,3 +83,4 @@ public class AuthController {
         return userDto;
     }
 }
+
