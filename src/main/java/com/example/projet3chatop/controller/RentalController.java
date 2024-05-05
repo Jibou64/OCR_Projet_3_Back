@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/rentals")
 @RestController
@@ -81,20 +83,17 @@ public class RentalController {
     }
 
     // Endpoint to get all rentals.
-    @GetMapping
-    public HashMap<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
-        HashMap<String, List<RentalDto>> map = new HashMap<>();
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, List<RentalDto>> getAllRentals(@RequestHeader(value = "Authorization", required = false) String jwt) {
+        List<RentalDto> rentalsDto = rentalService.getAllRentals().stream()
+                .map(rentalMapper::rentalToDto)
+                .peek(r -> {
+                    String resourceLink = "http://localhost:3001/files/" + r.getPicture();
+                    r.setPicture(resourceLink);
+                })
+                .toList();
 
-        var rentalsDto = rentalService.getAllRentals().stream().map(rentalMapper::rentalToDto).toList();
-
-        rentalsDto = rentalsDto.stream().peek(r -> {
-            var resourceLink = "http://localhost:3001/files/".concat(r.getPicture());
-
-            r.setPicture(resourceLink);
-        }).toList();
-
-        map.put("rentals", rentalsDto);
-        return map;
+        return Map.of("rentals", rentalsDto);
     }
 
     // Endpoint to update a rental by its id.
