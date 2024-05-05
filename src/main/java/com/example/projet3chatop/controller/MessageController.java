@@ -1,6 +1,7 @@
 package com.example.projet3chatop.controller;
 
 import com.example.projet3chatop.dto.MessageDto;
+import com.example.projet3chatop.dto.MessageResponseDto;
 import com.example.projet3chatop.mapper.MessageMapper;
 import com.example.projet3chatop.service.MessageService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class MessageController {
         // Convert DTO to Message entity and save it in the service.
         messageService.saveMessage(messageEntity);
         // Response indicating that the message has been successfully sent.
-        return ResponseEntity.ok().body("{\"message\": \"Message sent successfully!\"}");
+        MessageResponseDto responseDto = new MessageResponseDto("Message created successfully");
+        return ResponseEntity.ok().body(responseDto);
     }
 }
