@@ -1,6 +1,5 @@
 package com.example.projet3chatop.security;
 
-import com.example.projet3chatop.controller.RentalController;
 import com.example.projet3chatop.security.jwt.AuthEntryPointJwt;
 import com.example.projet3chatop.security.jwt.AuthTokenFilter;
 import com.example.projet3chatop.security.services.UserDetailsServiceImpl;
@@ -58,33 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  // Configuration of HTTP security rules
-//  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
-//    http.cors().and().csrf().disable()
-//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//            .authorizeRequests().antMatchers("/api/auth/**",
-//                    "/v2/api-docs",
-//                    "/v3/api-docs",
-//                    "/v3/api-docs/**",
-//                    "/swagger-resources",
-//                    "/swagger-resources/**",
-//                    "/configuration/ui",
-//                    "/configuration/security",
-//                    "/swagger-ui/**",
-//                    "/webjars/**",
-//                    "/swagger-ui.html"
-//            ).permitAll()
-//            .and()
-//            .formLogin().disable() // Disable default login form
-//            .logout().disable() // Disable default logout page
-//            .httpBasic().disable() // Disable basic authentication
-//            .authorizeRequests()
-//            .and()
-//            .headers().frameOptions().disable(); // Disable X-Frame-Options for Swagger UI in iframe
-//  }
-
+  //Conf
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
