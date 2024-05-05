@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/ocr_2
-    username: root
-    password: rootroot
+    url: jdbc:mysql://localhost/${APP_DB_DBNAME}
+    username: ${APP_DB_NAME}
+    password: ${APP_DB_PASS}
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,4 +20,3 @@ oc:
   app:
     jwtSecret: openclassrooms
     jwtExpirationMs: 86400000
-
